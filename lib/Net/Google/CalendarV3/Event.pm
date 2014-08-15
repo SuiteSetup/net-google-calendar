@@ -4,8 +4,11 @@ use Moose;
 with 'Net::Google::CalendarV3::ToJson';
 use Kavorka;
 use Try::Tiny;
+use Net::Google::CalendarV3::Attendee;
+use Net::Google::CalendarV3::Date;
+use Net::Google::CalendarV3::Person;
 use Types::Standard qw( Str Int Bool ArrayRef Enum);
-use Net::Google::CalendarV3::Types qw( Person Attendee Date);
+use Net::Google::CalendarV3::Types qw( Person Attendee Date );
 
 has [ qw( kind etag creator organizer attendees created
         endTimeUnspecified extendedProperties gadget

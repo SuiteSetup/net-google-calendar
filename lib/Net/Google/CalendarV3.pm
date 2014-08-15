@@ -1,5 +1,11 @@
 package Net::Google::CalendarV3;
 
+=head NAME
+
+Net::Google::CalendarV3 - Access Google Calendars using the v3 API
+
+=cut
+
 use Moose;
 use Kavorka;
 use Try::Tiny;
@@ -10,7 +16,8 @@ use Net::Google::CalendarV3::Event;
 use WWW::JSON;
 use JSON::XS;
 
-has authentication => is => 'rw';
+has authentication => is => 'ro', lazy => 1, predicate => 'has_auth', builder => '_build_authentication';
+has oauth2_access_token => is => 'ro', predicate => 'has_token';
 
 has calendars  => is => 'rw', default => sub { [] }, isa => ArrayRef[CalendarListEntry], coerce => 1;
 has _service   => is => 'ro', lazy => 1, builder => '_build_service';
@@ -19,9 +26,16 @@ has _current_calendar => is => 'rw', isa => CalendarId, coerce => 1;
 method _build_service {
     WWW::JSON->new( base_url         => 'https://www.googleapis.com/calendar/v3',
                     post_body_format => 'JSON',
-                    authentication   => $self->authentication,
+                    ( $self->has_auth || $self->has_token ? (authentication   => $self->authentication) : () ),
                     json             => JSON::XS->new->utf8->allow_nonref->allow_blessed->convert_blessed,
     );
+}
+
+method _build_authentication {
+    die "Need a valid OAuth2 access token"
+        unless $self->has_token;
+    my $token = $self->oauth2_access_token;
+    return sub { $_[1]->header(Authorization => "Bearer $token") };
 }
 
 method get_calendars (Bool $owned?) {
