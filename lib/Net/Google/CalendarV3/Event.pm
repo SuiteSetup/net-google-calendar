@@ -2,13 +2,13 @@ package Net::Google::CalendarV3::Event;
 
 use Moose;
 with 'Net::Google::CalendarV3::ToJson';
-use Kavorka;
+use Kavorka qw(method multi);
 use Try::Tiny;
 use Net::Google::CalendarV3::Attendee;
 use Net::Google::CalendarV3::Date;
 use Net::Google::CalendarV3::Person;
 use Types::Standard qw( Str Int Bool ArrayRef Enum);
-use Net::Google::CalendarV3::Types qw( Person Attendee Date );
+use Net::Google::CalendarV3::Types qw( Person Attendee Date DateTime );
 
 has [ qw( kind etag creator organizer attendees created
         endTimeUnspecified extendedProperties gadget
@@ -37,6 +37,28 @@ has '+status',       isa => Enum[qw(confirmed tentative cancelled)];
 has '+transparency', isa => Enum[qw(opaque transparent)];
 has '+visibility',   isa => Enum[qw(default public private confidential)];
 
+# compatibility methods for Net::Google::Calendar::Entry
+
+method uid { $self->id }
+
+multi method title ($title) {
+    $self->summary($title);
+}
+
+multi method title () {
+    $self->summary;
+}
+
+multi method when (DateTime $start, DateTime $end, Bool $is_all_day) {
+    $self->start->set($start, $is_all_day);
+    $self->end->set($end, $is_all_day);
+}
+
+multi method when () {
+    my ($start_dt, $start_all_day) = $self->start->get();
+    my ($end_dt, $end_all_day) = $self->end->get();
+    return ($start_dt, $end_dt, $start_all_day && $end_all_day);
+}
 
 =pod
 {

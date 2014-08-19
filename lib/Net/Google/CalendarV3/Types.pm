@@ -5,6 +5,7 @@ use Type::Library
    -declare => qw(  DefaultReminder NotificationSettings ListOfNotificationSettings
                     CalendarListEntry Person Attendee Date CalendarId
                     Event
+                    DateTime
                 );
 use Type::Utils -all;
 use Types::Standard -types;
@@ -16,6 +17,7 @@ class_type Person,                  { class => 'Net::Google::CalendarV3::Person'
 class_type Attendee,                { class => 'Net::Google::CalendarV3::Attendee' };
 class_type Date,                    { class => 'Net::Google::CalendarV3::Date' };
 class_type Event,                   { class => 'Net::Google::CalendarV3::Event' };
+class_type DateTime,                { class => 'DateTime' };
 
 declare ListOfNotificationSettings,
   as ArrayRef[NotificationSettings];
