@@ -49,6 +49,14 @@ multi method title () {
     $self->summary;
 }
 
+multi method content ($content) {
+    $self->description($content);
+}
+
+multi method content () {
+    $self->description;
+}
+
 multi method when (DateTime $start, DateTime $end, Bool $is_all_day) {
     $self->start->set($start, $is_all_day);
     $self->end->set($end, $is_all_day);
