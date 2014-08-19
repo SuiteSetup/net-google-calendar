@@ -5,7 +5,7 @@ use Kavorka;
 use DateTime::Format::ISO8601;
 with 'Net::Google::CalendarV3::ToJson';
 use Net::Google::CalendarV3::Types qw(DateTime);
-use Types::Standard qw( Bool to_Bool);
+use Types::Standard qw( Bool );
 has $_, is => 'ro', clearer => "clear_$_" for qw( date dateTime timeZone );
 
 method set (DateTime $dt, Bool $is_all_day) {
@@ -22,11 +22,11 @@ method set (DateTime $dt, Bool $is_all_day) {
 
 method get () {
     if ($self->date) {
-        return ( DateTime::Format::ISO8601->parse_datetime($self->date), to_Bool(1) );
+        return ( DateTime::Format::ISO8601->parse_datetime($self->date), 1 );
     } else {
         my $dt = DateTime::Format::ISO8601->parse_datetime($self->dateTime);
         $dt->set_time_zone($self->timeZone) if $self->timeZone;
-        return ($dt, to_Bool(0));
+        return ( $dt, 0 );
     }
 }
 
