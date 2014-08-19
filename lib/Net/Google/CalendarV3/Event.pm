@@ -31,7 +31,8 @@ has [ qw( +anyoneCanAddSelf +attendeesOmitted
         +locked +privateCopy
     ) ], isa => Bool;
 
-has [qw( +start +end +originalStartTime )], isa => Date, coerce => 1;
+has [qw( +start +end +originalStartTime )], isa => Date, coerce => 1, lazy => 1, builder => '_build_empty_date';
+method _build_empty_date { Net::Google::CalendarV3::Date->new }
 
 has '+status',       isa => Enum[qw(confirmed tentative cancelled)];
 has '+transparency', isa => Enum[qw(opaque transparent)];
