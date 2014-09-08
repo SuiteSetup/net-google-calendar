@@ -19,7 +19,7 @@ has '+kind' => default => 'calendar#calendarListEntry';
 has '+defaultReminders'       => isa => ArrayRef[DefaultReminder], coerce => 1;
 has '+notificationSettings'   => isa => ListOfNotificationSettings, coerce => 1;
 
-has [qw( +deleted +primary +hidden +selected )], isa => CBool;
+has [qw( +deleted +primary +hidden +selected )], isa => CBool, coerce => 1;
 
 =pod
 {

@@ -29,7 +29,7 @@ has '+attendees', isa => ArrayRef[Attendee], coerce => 1;
 has [ qw( +anyoneCanAddSelf +attendeesOmitted
         +guestsCanInviteOthers +guestsCanSeeOtherGuests
         +locked +privateCopy
-    ) ], isa => CBool;
+    ) ], isa => CBool, coerce => 1;
 
 has [qw( +start +end +originalStartTime )], isa => Date, coerce => 1, lazy => 1, builder => '_build_empty_date';
 method _build_empty_date { Net::Google::CalendarV3::Date->new }
