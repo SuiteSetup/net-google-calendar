@@ -9,8 +9,8 @@ Net::Google::CalendarV3 - Access Google Calendars using the v3 API
 use Moose;
 use Kavorka;
 use Try::Tiny;
-use Types::Standard qw( ArrayRef Bool );
-use Net::Google::CalendarV3::Types qw( CalendarListEntry CalendarId Event to_Event );
+use Types::Standard qw( ArrayRef );
+use Net::Google::CalendarV3::Types qw( CBool CalendarListEntry CalendarId Event to_Event );
 use Net::Google::CalendarV3::Calendar;
 use Net::Google::CalendarV3::Event;
 use WWW::JSON;
@@ -38,7 +38,7 @@ method _build_authentication {
     return sub { $_[1]->header(Authorization => "Bearer $token") };
 }
 
-method get_calendars (Bool $owned?) {
+method get_calendars (CBool $owned?) {
     my $res = $self->_service->get('/users/me/calendarList', { minAccessRole => ($owned ? "owner" : "writer") } );
     die $res->error unless $res->success;
     $self->calendars($res->res->{items});

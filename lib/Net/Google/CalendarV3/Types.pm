@@ -6,6 +6,7 @@ use Type::Library
                     CalendarListEntry Person Attendee Date CalendarId
                     Event
                     DateTime
+                    CBool
                 );
 use Type::Utils -all;
 use Types::Standard -types;
@@ -22,8 +23,12 @@ class_type DateTime,                { class => 'DateTime' };
 declare ListOfNotificationSettings,
   as ArrayRef[NotificationSettings];
 
+declare CBool, as Bool, where { !!$_ || !$_ };
+
 declare CalendarId, as Str, where { 1 };
 
+coerce CBool,
+    from Any, via { !!$_ };
 coerce CalendarId,
     from CalendarListEntry, via { $_->id };
 coerce CalendarId,

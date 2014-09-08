@@ -4,11 +4,10 @@ use Moose;
 use Kavorka;
 use DateTime::Format::ISO8601;
 with 'Net::Google::CalendarV3::ToJson';
-use Net::Google::CalendarV3::Types qw(DateTime);
-use Types::Standard qw( Bool );
+use Net::Google::CalendarV3::Types qw( CBool DateTime );
 has $_, is => 'ro', clearer => "clear_$_" for qw( date dateTime timeZone );
 
-method set (DateTime $dt, Bool $is_all_day) {
+method set (DateTime $dt, CBool $is_all_day) {
     if ($is_all_day) {
         $self->date($dt->ymd);
         $self->clear_dateTime;

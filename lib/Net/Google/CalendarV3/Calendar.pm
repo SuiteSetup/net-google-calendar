@@ -3,8 +3,8 @@ package Net::Google::CalendarV3::Calendar;
 use Moose;
 use Kavorka;
 use Try::Tiny;
-use Types::Standard qw( Str Int Bool ArrayRef HashRef );
-use Net::Google::CalendarV3::Types qw( DefaultReminder ListOfNotificationSettings);
+use Types::Standard qw( Str Int ArrayRef HashRef );
+use Net::Google::CalendarV3::Types qw( CBool DefaultReminder ListOfNotificationSettings);
 use Net::Google::CalendarV3::DefaultReminder;
 use Net::Google::CalendarV3::NotificationSettings;
 
@@ -19,7 +19,7 @@ has '+kind' => default => 'calendar#calendarListEntry';
 has '+defaultReminders'       => isa => ArrayRef[DefaultReminder], coerce => 1;
 has '+notificationSettings'   => isa => ListOfNotificationSettings, coerce => 1;
 
-has [qw( +deleted +primary +hidden +selected )], isa => Bool;
+has [qw( +deleted +primary +hidden +selected )], isa => CBool;
 
 =pod
 {

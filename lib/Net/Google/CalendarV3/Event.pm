@@ -7,8 +7,8 @@ use Try::Tiny;
 use Net::Google::CalendarV3::Attendee;
 use Net::Google::CalendarV3::Date;
 use Net::Google::CalendarV3::Person;
-use Types::Standard qw( Str Int Bool ArrayRef Enum);
-use Net::Google::CalendarV3::Types qw( Person Attendee Date DateTime );
+use Types::Standard qw( Str Int ArrayRef Enum);
+use Net::Google::CalendarV3::Types qw( CBool Person Attendee Date DateTime );
 
 has [ qw( kind etag creator organizer attendees created
         endTimeUnspecified extendedProperties gadget
@@ -29,7 +29,7 @@ has '+attendees', isa => ArrayRef[Attendee], coerce => 1;
 has [ qw( +anyoneCanAddSelf +attendeesOmitted
         +guestsCanInviteOthers +guestsCanSeeOtherGuests
         +locked +privateCopy
-    ) ], isa => Bool;
+    ) ], isa => CBool;
 
 has [qw( +start +end +originalStartTime )], isa => Date, coerce => 1, lazy => 1, builder => '_build_empty_date';
 method _build_empty_date { Net::Google::CalendarV3::Date->new }
@@ -58,7 +58,7 @@ multi method content () {
     $self->description;
 }
 
-multi method when (DateTime $start, DateTime $end, Bool $is_all_day) {
+multi method when (DateTime $start, DateTime $end, CBool $is_all_day) {
     $self->start->set($start, $is_all_day);
     $self->end->set($end, $is_all_day);
 }
