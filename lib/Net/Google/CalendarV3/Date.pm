@@ -24,7 +24,7 @@ method get () {
         return ( DateTime::Format::ISO8601->parse_datetime($self->date), 1 );
     } else {
         my $dt = DateTime::Format::ISO8601->parse_datetime($self->dateTime);
-        $dt->set_time_zone($self->timeZone) if $self->timeZone;
+        eval { $dt->set_time_zone($self->timeZone) if $self->timeZone }; # ignore unknown time zones
         return ( $dt, 0 );
     }
 }
