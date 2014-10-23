@@ -51,7 +51,13 @@ method set_calendar ($cal) {
 method get_events (%filters) {
     my $res = $self->_service->get('/calendars/[% calendarId %]/events', { -calendarId => $self->_current_calendar, %filters });
     die $res->error unless $res->success;
-    map { to_Event($_) } @{ $res->res->{items} };
+    my @items = @{ $res->res->{items} };
+    while (my $pt = $res->{nextPageToken}) {
+        $filters{pageToken} = $pt;
+        $res = $self->_service->get('/calendars/[% calendarId %]/events', { -calendarId => $self->_current_calendar, %filters });
+        push @items, @{ $res->res->{items} };
+    }
+    map { to_Event($_) } @items;
 }
 
 method get_entry ($entry_id) {
