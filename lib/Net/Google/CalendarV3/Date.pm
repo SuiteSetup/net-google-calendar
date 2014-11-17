@@ -14,7 +14,7 @@ method set (DateTime $dt, CBool $is_all_day) {
         $self->clear_timeZone;
     } else {
         $self->dateTime($dt->iso8601);
-        $self->timeZone($dt->time_zone->name);
+        $self->timeZone($dt->time_zone->name) if $dt->time_zone && $dt->time_zone ne 'floating';
         $self->clear_date;
     }
 }
