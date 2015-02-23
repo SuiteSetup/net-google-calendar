@@ -87,5 +87,8 @@ method update_entry ($entry) {
     $entry = to_Event($res->res);
 }
 
+method move_entry ($entry_id, $new_calendar_id) {
+    my $res = $self->_service->post('/calendars/[% calendarId %]/events/[% eventId %]/move?destination=[% destination %]', { -calendarId => $self->_current_calendar, -eventId => $entry_id, -destination => $new_calendar_id })
+}
 1;
 
