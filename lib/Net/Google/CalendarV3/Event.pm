@@ -11,13 +11,13 @@ use Types::Standard qw( Str Int ArrayRef Enum);
 use Net::Google::CalendarV3::Types qw( CBool Person Attendee Date DateTime );
 
 has [ qw( kind etag creator organizer attendees created
-        endTimeUnspecified extendedProperties gadget
+        endTimeUnspecified gadget
         hangoutLink htmlLink iCalUID locked originalStartTime
         privateCopy recurringEventId reminders source start end
         updated
     ) ], is => 'ro';
 has [ qw( anyoneCanAddSelf attendeesOmitted colorId description
-        guestsCanInviteOthers guestsCanSeeOtherGuests
+        extendedProperties guestsCanInviteOthers guestsCanSeeOtherGuests
         id location recurrence sequence status summary
         transparency visibility
     ) ], is => 'rw';
