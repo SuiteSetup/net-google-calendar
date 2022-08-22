@@ -25,7 +25,7 @@ has [ qw( anyoneCanAddSelf attendeesOmitted colorId description
 has '+kind' => default => 'calendar#event';
 
 has [ qw( +creator +organizer ) ], isa => Person, coerce => 1;
-has '+attendees', isa => ArrayRef[Attendee], coerce => 1;
+has '+attendees', isa => ArrayRef[Attendee], default => sub { return []; }, coerce => 1;
 has [ qw( +anyoneCanAddSelf +attendeesOmitted
         +guestsCanInviteOthers +guestsCanSeeOtherGuests
         +locked +privateCopy
