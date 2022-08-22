@@ -68,7 +68,8 @@ method get_entry ($entry_id) {
 
 method add_entry ($entry) {
     $entry->{-calendarId} = $self->_current_calendar;
-    my $res = $self->_service->post('/calendars/[% calendarId %]/events', $entry);
+    $entry->{-sendNotifications} //= 'False';
+    my $res = $self->_service->post('/calendars/[% calendarId %]/events?sendNotifications=[% sendNotifications %]', $entry);
     die $res->error unless $res->success;
     $entry = to_Event($res->res);
 }
